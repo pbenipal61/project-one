@@ -1,0 +1,16 @@
+﻿<Properties StartupConfiguration="{A92C39AF-6B5C-0A93-AA12-35F6B0A22CA4}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/Obstacle.cs">
+    <Files>
+      <File FileName="Assets/scripts/tests/GameManager.cs" Line="10" Column="37" />
+      <File FileName="Assets/scripts/LevelGenerator.cs" Line="80" Column="119" />
+      <File FileName="Assets/scripts/Obstacle.cs" Line="17" Column="13" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
