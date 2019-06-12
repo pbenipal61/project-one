@@ -38,6 +38,17 @@ public class LevelGenerator : MonoBehaviour
     private int currentObstacle = 0;                               // Index of current obstacle used from the pool
     private float speed = 10f;                                     // Speed of flow of obstacles
     public List<Obstacle> obstacleObjects = new List<Obstacle>();   // List of obstacle bases to be duplicated for use.
+    private List<Vector2> obstaclesPositions;                       // List of initial positions of all obstacles
+    private CameraControllerV2 cameraController;                    // Reference to camera controller
+
+    private void Start()
+    {
+        // Finds reference to camera controller 
+        if (cameraController == null)
+        {
+            cameraController = FindObjectOfType<CameraControllerV2>();
+        }
+    }
 
     /// <summary>
     /// Generates the level based on <paramref name="levelCreationData"/> passed.
@@ -46,29 +57,12 @@ public class LevelGenerator : MonoBehaviour
     public void Generate(LevelCreationData levelCreationData)
     {
         obstaclesHolder = new GameObject("Obstacles Holder");
-        obstaclePool = CreateObstaclePool(10);
+        obstaclePool = CreateObstaclePool(5);
         Debug.Log("Number of obstacles in pool: " + obstaclePool.Count);
         StartCoroutine(ObstaclesCycle(obstaclePool));
     }
 
-    private float lastY = 6f;    // Tracks location of the last obstacle printed.
-    /// <summary>
-    /// Prints obstacles based on number passed.
-    /// </summary>
-    /// <param name="numberOfObstacles">Number of obstacles.</param>
-    private void PrintObstacles(int numberOfObstacles)
-    {
-        for (int i = 0; i < numberOfObstacles; i++)
-        {
-            float x = UnityEngine.Random.Range(-2.2f, 2.2f);
-            float y = UnityEngine.Random.Range(2f, 6f);
-
-            lastY = lastY + y;
-            Obstacle obj = Instantiate(obstacleObjects[0], new Vector2(x, lastY), Quaternion.identity);
-            obj.transform.parent = obstaclesHolder.transform;
-        }
-    }
-
+   
     /// <summary>
     /// Creates the obstacle pool.
     /// </summary>
@@ -104,11 +98,46 @@ public class LevelGenerator : MonoBehaviour
 
             lastYInCycle = lastYInCycle + y;
             Vector2 pos = new Vector2(x, lastYInCycle);
-            pool[i].Activate(-11f);
+            pool[i].Activate(pos);
         }
-        lastYInCycle = 6f;
+
         yield return new WaitForSeconds(0f);
         //StartCoroutine(ObstaclesCycle(pool));
+    }
+
+    private float lastY; // Tracks location of the last obstacle printed.
+    /// <summary>
+    /// Generates a new position.
+    /// </summary>
+    /// <returns>The new position.</returns>
+    public virtual Vector2 GenerateNewPosition()
+    {
+
+        float x = UnityEngine.Random.Range(-2.2f, 2.2f);
+        float y = UnityEngine.Random.Range(3, 6);
+
+        lastY = lastY + y;
+        Vector2 pos = new Vector2(x, lastY);
+
+        return pos;
+    }
+
+    private void Update()
+    {
+        for( int i = 0; i < obstaclePool.Count; i++)
+        {
+            Obstacle obstacle = obstaclePool[i];
+
+            float EPSILON = 0;
+            if (System.Math.Abs(cameraController.GetYPosition() - 7) > EPSILON)
+            {
+                if (obstacle.GetPosition().y <= cameraController.GetYPosition() - 7)
+                {
+
+                    obstacle.SetPosition(GenerateNewPosition());
+                }
+            }
+        }
     }
 }
 

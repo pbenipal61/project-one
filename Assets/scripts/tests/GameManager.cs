@@ -38,11 +38,11 @@ public class GameManager : MonoBehaviour
     {
         if(swipe == Swipe.RIGHT)
         {
-            StartCoroutine(MoveTo(new Vector2(extremeX, player.transform.localPosition.y), player.gameObject));
+            StartCoroutine(MoveTo(new Vector3(extremeX, player.transform.localPosition.y, 1f), player.gameObject));
         }
         else if(swipe == Swipe.LEFT)
         {
-            StartCoroutine(MoveTo(new Vector2(-1 * extremeX, player.transform.localPosition.y), player.gameObject));
+            StartCoroutine(MoveTo(new Vector3(-1 * extremeX, player.transform.localPosition.y, 1f), player.gameObject));
         }
     }
 
@@ -52,14 +52,14 @@ public class GameManager : MonoBehaviour
     /// <returns>The to.</returns>
     /// <param name="pos">Position to move the object to. Should be a local position.</param>
     /// <param name="obj">Object to move.</param>
-    private IEnumerator MoveTo(Vector2 pos, GameObject obj)
+    private IEnumerator MoveTo(Vector3 pos, GameObject obj)
     {
         Debug.Log("Here");
         float time = 0.3f;
-        Vector2 startPos = obj.transform.localPosition;
+        Vector3 startPos = obj.transform.localPosition;
         for (float t = 0; t <= 1 * time; t += Time.deltaTime)
         {
-            obj.transform.localPosition = Vector2.Lerp(startPos, pos, t / time);
+            obj.transform.localPosition = Vector3.Lerp(startPos, pos, t / time);
             yield return 0;
         }
         obj.transform.localPosition = pos;

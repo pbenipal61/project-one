@@ -13,7 +13,18 @@ public class Obstacle : MonoBehaviour
     private bool isActive;                              // Check if this obstacle is active
     private float speed = 10f;                          // Current speed of translation
     private float yLimit = 0f;                          // Y limit for translation of this obstacle 
+    private Vector2 originalPosition = Vector2.zero;                   // First position for this obstacle
+    private int poolIndex = 1;                          // Index in the pool
+    private CameraControllerV2 cameraController;        // Reference to camera controller
 
+    private void Start()
+    {
+        // Finds reference to camera controller 
+        if(cameraController == null)
+        {
+            cameraController = FindObjectOfType<CameraControllerV2>();
+        }
+    }
     /// <summary>
     /// Init this instance of obstacle. Needs to be overridden by extending classes.
     /// </summary>
@@ -46,6 +57,7 @@ public class Obstacle : MonoBehaviour
     public virtual void Init(float yLimit, int poolIndex)
     {
         this.yLimit = yLimit;
+        this.poolIndex = poolIndex;
         SetPosition(GenerateNewPosition(poolIndex));
     }
     /// <summary>
@@ -156,6 +168,8 @@ public class Obstacle : MonoBehaviour
         this.gameObject.transform.localPosition = position;
     }
 
+
+
     /// <summary>
     /// Gets the position.
     /// </summary>
@@ -165,6 +179,7 @@ public class Obstacle : MonoBehaviour
         return this.gameObject.transform.localPosition;
     }
 
+    private float yOffset = 7f;
     /// <summary>
     /// Generates a new position.
     /// </summary>
@@ -172,25 +187,32 @@ public class Obstacle : MonoBehaviour
     /// <param name="multiple">Multiple.</param>
     public virtual Vector2 GenerateNewPosition(float multiple = 1f)
     {
+        float jump = multiple * 5f;
         float x = UnityEngine.Random.Range(-2.2f, 2.2f);
-        float y = UnityEngine.Random.Range(2f, 6f);
-        Vector2 pos = new Vector2(x, multiple*y);
+        float y = UnityEngine.Random.Range(jump, jump+ 6);
+
+        Vector2 pos = new Vector2(x, y + cameraController.GetYPosition());
+        if(originalPosition == Vector2.zero)
+        {
+            Debug.Log("New position generated: " + pos);
+            originalPosition = pos;
+        }
         return pos;
     }
-    private void Update()
-    {
-        if (isActive)
-        {
-            // Translates object along an axis with constant speed
-            transform.Translate(Vector2.down * Time.deltaTime * speed);
-            float EPSILON = 0;
-            if (System.Math.Abs(yLimit) > EPSILON)
-            {
-                if (transform.localPosition.y <= yLimit)
-                {
-                    SetPosition(GenerateNewPosition());
-                }
-            }
-        }
-    }
+
+    //private void Update()
+    //{
+    //    if (isActive)
+    //    {
+    //        float EPSILON = 0;
+    //        if (System.Math.Abs(cameraController.GetYPosition() - 5) > EPSILON)
+    //        {
+    //            if (transform.localPosition.y <= cameraController.GetYPosition() - 5)
+    //            {
+
+    //                SetPosition(GenerateNewPosition());
+    //            }
+    //        }
+    //    }
+    //}
 }
