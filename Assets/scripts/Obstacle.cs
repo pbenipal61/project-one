@@ -12,19 +12,10 @@ public class Obstacle : MonoBehaviour
     private Collider2D coll;                            // Reference to the collider attached to this object
     private bool isActive;                              // Check if this obstacle is active
     private float speed = 10f;                          // Current speed of translation
-    private float yLimit = 0f;                          // Y limit for translation of this obstacle 
     private Vector2 originalPosition = Vector2.zero;                   // First position for this obstacle
     private int poolIndex = 1;                          // Index in the pool
-    private CameraControllerV2 cameraController;        // Reference to camera controller
 
-    private void Start()
-    {
-        // Finds reference to camera controller 
-        if(cameraController == null)
-        {
-            cameraController = FindObjectOfType<CameraControllerV2>();
-        }
-    }
+   
     /// <summary>
     /// Init this instance of obstacle. Needs to be overridden by extending classes.
     /// </summary>
@@ -40,26 +31,7 @@ public class Obstacle : MonoBehaviour
         SetPosition(position);
     }
 
-    /// <summary>
-    /// Init the obstacle for specified y limit for translation.
-    /// </summary>
-    /// <param name="yLimit">Y limit.</param>
-    public virtual void Init(float yLimit)
-    {
-        this.yLimit = yLimit;
-        SetPosition(GenerateNewPosition());
-    }
-    /// <summary>
-    /// Init the obstacle for specified y limit for translation and pool index
-    /// </summary>
-    /// <param name="yLimit">Y limit.</param>
-    /// <param name="poolIndex">Pool index.</param>
-    public virtual void Init(float yLimit, int poolIndex)
-    {
-        this.yLimit = yLimit;
-        this.poolIndex = poolIndex;
-        SetPosition(GenerateNewPosition(poolIndex));
-    }
+
     /// <summary>
     /// Activate this instance based on provided position.
     /// </summary>
@@ -70,15 +42,7 @@ public class Obstacle : MonoBehaviour
         Init(position);
     }
 
-    /// <summary>
-    /// Activate the obstacle based on specified yLimit.
-    /// </summary>
-    /// <param name="yLimit">Y limit.</param>
-    public virtual void Activate(float yLimit, int poolIndex = 1)
-    {
-        SetBasicsActive();
-        Init(yLimit, poolIndex);
-    }
+   
     /// <summary>
     /// Sets the basics active. Basics include Sprite Renderer and Collider2D
     /// </summary>
@@ -179,26 +143,6 @@ public class Obstacle : MonoBehaviour
         return this.gameObject.transform.localPosition;
     }
 
-    private float yOffset = 7f;
-    /// <summary>
-    /// Generates a new position.
-    /// </summary>
-    /// <returns>The new position.</returns>
-    /// <param name="multiple">Multiple.</param>
-    public virtual Vector2 GenerateNewPosition(float multiple = 1f)
-    {
-        float jump = multiple * 5f;
-        float x = UnityEngine.Random.Range(-2.2f, 2.2f);
-        float y = UnityEngine.Random.Range(jump, jump+ 6);
-
-        Vector2 pos = new Vector2(x, y + cameraController.GetYPosition());
-        if(originalPosition == Vector2.zero)
-        {
-            Debug.Log("New position generated: " + pos);
-            originalPosition = pos;
-        }
-        return pos;
-    }
 
     //private void Update()
     //{

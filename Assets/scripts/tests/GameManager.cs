@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
         swipeInput = SwipeInputV2.Instance;
         LevelCreationData levelCreationData = new LevelCreationData(20);
         FindObjectOfType<LevelGenerator>().Generate(levelCreationData);
+        player.Init(extremeX);
     }
 
     /// <summary>
@@ -38,11 +39,16 @@ public class GameManager : MonoBehaviour
     {
         if(swipe == Swipe.RIGHT)
         {
-            StartCoroutine(MoveTo(new Vector3(extremeX, player.transform.localPosition.y, 1f), player.gameObject));
+            Vector2 force = new Vector3(1000,0, 1);
+            player.GetRigidbody().Sleep();
+            player.GetRigidbody().AddForce(force);
+            
         }
         else if(swipe == Swipe.LEFT)
         {
-            StartCoroutine(MoveTo(new Vector3(-1 * extremeX, player.transform.localPosition.y, 1f), player.gameObject));
+            Vector2 force = new Vector3(-1000, 0, 1);
+            player.GetRigidbody().Sleep();
+            player.GetRigidbody().AddForce(force);
         }
     }
 
@@ -54,6 +60,7 @@ public class GameManager : MonoBehaviour
     /// <param name="obj">Object to move.</param>
     private IEnumerator MoveTo(Vector3 pos, GameObject obj)
     {
+
         Debug.Log("Here");
         float time = 0.3f;
         Vector3 startPos = obj.transform.localPosition;

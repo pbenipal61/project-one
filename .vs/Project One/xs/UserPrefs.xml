@@ -1,10 +1,12 @@
 ﻿<Properties StartupConfiguration="{A92C39AF-6B5C-0A93-AA12-35F6B0A22CA4}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/LevelGenerator.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/Player.cs">
     <Files>
-      <File FileName="Assets/scripts/tests/GameManager.cs" Line="10" Column="37" />
-      <File FileName="Assets/scripts/LevelGenerator.cs" Line="115" Column="5" />
-      <File FileName="Assets/scripts/Obstacle.cs" Line="208" Column="16" />
-      <File FileName="Assets/scripts/CameraControllerV2.cs" Line="1" Column="1" />
+      <File FileName="Assets/scripts/tests/GameManager.cs" Line="44" Column="37" />
+      <File FileName="Assets/scripts/LevelGenerator.cs" Line="126" Column="6" />
+      <File FileName="Assets/scripts/Obstacle.cs" Line="145" Column="1" />
+      <File FileName="Assets/scripts/CameraControllerV2.cs" Line="30" Column="6" />
+      <File FileName="Assets/scripts/SwipeInputV2.cs" Line="1" Column="1" />
+      <File FileName="Assets/scripts/Player.cs" Line="9" Column="11" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
